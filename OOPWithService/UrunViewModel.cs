@@ -1,34 +1,41 @@
 ﻿namespace OOPWithService;
 
-using OOPWithService.Records;
-
-public class UrunViewModel : IObserver<AddedModel<UrunModel>>, IObserver<RemovedModel<UrunModel>>
+public class UrunViewModel
 {
-    private IList<UrunModel> urunler = new List<UrunModel>();
-    private IUrunService urunService = new UrunService();
+    private readonly IList<UrunModel> urunler = new List<UrunModel>();
+    private readonly IUrunService urunService = new UrunService();
 
     public UrunViewModel()
     {
-        urunService.GetAll();
+        this.urunService.GetAll();
 
-        urunService.Subscribe((IObserver<AddedModel<UrunModel>>)this);
-        urunService.Subscribe((IObserver<RemovedModel<UrunModel>>)this);
+        this.urunService.SubAddAction(async (urun) =>
+        {
+            //try
+            //{
+                this.urunler.Add(urun);
+                throw new Exception($"{urun.Ad}, eklenirken bir şeyler ters gitti!");
+                Console.WriteLine($"{urun.Ad} viewde listeye eklendi.");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
+        });
+
+        this.urunService.SubAddAction((urun) =>
+        {
+            this.urunler.Add(urun);
+            Console.WriteLine($"{urun.Ad} viewde listeye eklendi.");
+        });
+
+        this.urunService.SubDeleteAction((urun) =>
+        {
+            this.urunler.Remove(urun);
+            Console.WriteLine($"{urun.Ad} viewde listeden kaldırıldı.");
+        });
 
         Console.WriteLine("Ürünler listeleniyor.");
-    }
-
-    public void OnCompleted() => throw new NotImplementedException();
-    public void OnError(Exception error) => throw new NotImplementedException();
-    public void OnNext(AddedModel<UrunModel> value) 
-    {
-        this.urunler.Add(value.model);
-        Console.WriteLine($"{value.model.Ad}, Viewe eklendi gösteriliyor.");
-    }
-
-    public void OnNext(RemovedModel<UrunModel> value)
-    {
-        this.urunler.Remove(value.model);
-        Console.WriteLine($"{value.model.Ad}, Viewden kaldırıldı.");
     }
 
     public void YeniUrunEkleSil()
@@ -39,7 +46,7 @@ public class UrunViewModel : IObserver<AddedModel<UrunModel>>, IObserver<Removed
             Ad = "Ürün 1"
         };
 
-        urunService.Add(model);
-        urunService.Remove(model);
+        this.urunService.Add(model);
+        this.urunService.Remove(model);
     }
 }

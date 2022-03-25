@@ -1,13 +1,11 @@
 ﻿namespace OOPWithService;
 
-using OOPWithService.Records;
-
 using System;
-using System.Collections;
 
 public class UrunService : IUrunService
 {
-    private ArrayList observers = new ArrayList();
+    private IList<Action<UrunModel>> addActions = new List<Action<UrunModel>>();
+    private IList<Action<UrunModel>> deleteActions = new List<Action<UrunModel>>();
 
     public void GetAll()
     {
@@ -19,35 +17,23 @@ public class UrunService : IUrunService
     {
         Console.WriteLine($"{urun.Ad}, Uzak servise gönderildi.");
         Console.WriteLine($"{urun.Ad}, Eklendi");
-        observers.OfType<IObserver<AddedModel<UrunModel>>>()
-            .ToList()
-            .ForEach(observer => observer.OnNext(new AddedModel<UrunModel>(urun)));
+        addActions.ToList().ForEach(action => action.Invoke(urun));
     }
 
     public void Remove(UrunModel urun)
     {
         Console.WriteLine($"{urun.Ad}, Uzak servise gönderildi.");
         Console.WriteLine($"{urun.Ad}, Silindi");
-        observers.OfType<IObserver<RemovedModel<UrunModel>>>()
-            .ToList()
-            .ForEach(observer => observer.OnNext(new RemovedModel<UrunModel>(urun)));
+        deleteActions.ToList().ForEach(action => action.Invoke(urun));
     }
 
-
-    public void Dispose() 
+    public void SubAddAction(Action<UrunModel> action)
     {
-        this.observers.Clear();
+        this.addActions.Add(action);
     }
 
-    public IDisposable Subscribe(IObserver<AddedModel<UrunModel>> observer)
+    public void SubDeleteAction(Action<UrunModel> action)
     {
-        this.observers.Add(observer);
-        return this;
-    }
-
-    public IDisposable Subscribe(IObserver<RemovedModel<UrunModel>> observer)
-    {
-        this.observers.Add(observers);
-        return this;
+        this.deleteActions.Add(action);
     }
 }
