@@ -1,5 +1,7 @@
 ﻿namespace OOPWithService;
 
+using OOPWithService.Records;
+
 using System;
 using System.Collections;
 
@@ -17,18 +19,18 @@ public class UrunService : IUrunService
     {
         Console.WriteLine($"{urun.Ad}, Uzak servise gönderildi.");
         Console.WriteLine($"{urun.Ad}, Eklendi");
-        observers.OfType<IObserver<AddedUrunModel>>()
+        observers.OfType<IObserver<AddedModel<UrunModel>>>()
             .ToList()
-            .ForEach(observer => observer.OnNext(new AddedUrunModel(urun)));
+            .ForEach(observer => observer.OnNext(new AddedModel<UrunModel>(urun)));
     }
 
     public void Remove(UrunModel urun)
     {
         Console.WriteLine($"{urun.Ad}, Uzak servise gönderildi.");
         Console.WriteLine($"{urun.Ad}, Silindi");
-        observers.OfType<IObserver<RemovedUrunModel>>()
+        observers.OfType<IObserver<RemovedModel<UrunModel>>>()
             .ToList()
-            .ForEach(observer => observer.OnNext(new RemovedUrunModel(urun)));
+            .ForEach(observer => observer.OnNext(new RemovedModel<UrunModel>(urun)));
     }
 
 
@@ -37,13 +39,13 @@ public class UrunService : IUrunService
         this.observers.Clear();
     }
 
-    public IDisposable Subscribe(IObserver<AddedUrunModel> observer)
+    public IDisposable Subscribe(IObserver<AddedModel<UrunModel>> observer)
     {
         this.observers.Add(observer);
         return this;
     }
 
-    public IDisposable Subscribe(IObserver<RemovedUrunModel> observer)
+    public IDisposable Subscribe(IObserver<RemovedModel<UrunModel>> observer)
     {
         this.observers.Add(observers);
         return this;
