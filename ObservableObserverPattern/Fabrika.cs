@@ -2,11 +2,11 @@
 
 using System;
 
-public class Fabrika : IObservable<Urun>, IDisposable
+public class Fabrika : IFabrika
 {
     private IList<IObserver<Urun>> observers = new List<IObserver<Urun>>();
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         this.observers.Clear();
     }
