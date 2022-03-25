@@ -11,16 +11,8 @@ public class UrunViewModel
 
         this.urunService.SubAddAction(async (urun) =>
         {
-            //try
-            //{
-                this.urunler.Add(urun);
-                throw new Exception($"{urun.Ad}, eklenirken bir şeyler ters gitti!");
-                Console.WriteLine($"{urun.Ad} viewde listeye eklendi.");
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex.Message);
-            //}
+            this.urunler.Add(urun);
+            Console.WriteLine($"{urun.Ad} viewde listeye eklendi.");
         });
 
         this.urunService.SubAddAction((urun) =>
