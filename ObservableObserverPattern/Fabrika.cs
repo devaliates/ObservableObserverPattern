@@ -17,6 +17,11 @@ public class Fabrika : IFabrika
         return this;
     }
 
+    public void UnSubscribe(IObserver<Urun> observer)
+    {
+        this.observers.Remove(observer);
+    }
+
     public void UretimeBasla(String urunAdi)
     {
         Urun urun = new Urun() { Name = urunAdi };

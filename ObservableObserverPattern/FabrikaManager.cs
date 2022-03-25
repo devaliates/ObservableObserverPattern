@@ -12,6 +12,7 @@ public class FabrikaManager
 
         fabrika.Subscribe(tasiyici);
         fabrika.Subscribe(usayici);
+        fabrika.UnSubscribe(tasiyici);
     }
 
     public void StartProduct()
