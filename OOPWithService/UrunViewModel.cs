@@ -1,8 +1,6 @@
 ﻿namespace OOPWithService;
 
-using OOPWithService.Records;
-
-public class UrunViewModel : IObserver<AddedModel<UrunModel>>, IObserver<RemovedModel<UrunModel>>
+public class UrunViewModel : IObserver<Object>
 {
     private IList<UrunModel> urunler = new List<UrunModel>();
     private IUrunService urunService = new UrunService();
@@ -11,24 +9,25 @@ public class UrunViewModel : IObserver<AddedModel<UrunModel>>, IObserver<Removed
     {
         urunService.GetAll();
 
-        urunService.Subscribe((IObserver<AddedModel<UrunModel>>)this);
-        urunService.Subscribe((IObserver<RemovedModel<UrunModel>>)this);
+        urunService.Subscribe(this);
 
         Console.WriteLine("Ürünler listeleniyor.");
     }
 
     public void OnCompleted() => throw new NotImplementedException();
     public void OnError(Exception error) => throw new NotImplementedException();
-    public void OnNext(AddedModel<UrunModel> value) 
+    public void OnNext(Object value) 
     {
-        this.urunler.Add(value.model);
-        Console.WriteLine($"{value.model.Ad}, Viewe eklendi gösteriliyor.");
-    }
-
-    public void OnNext(RemovedModel<UrunModel> value)
-    {
-        this.urunler.Remove(value.model);
-        Console.WriteLine($"{value.model.Ad}, Viewden kaldırıldı.");
+        if(value is UrunService.AddUrun addUrun)
+        {
+            this.urunler.Add(addUrun.model);
+            Console.WriteLine($"{addUrun.model.Ad}, Viewe eklendi.");
+        }
+        if(value is UrunService.DeleteUrun deleteUrun)
+        {
+            this.urunler.Remove(deleteUrun.model);
+            Console.WriteLine($"{deleteUrun.model.Ad}, View den kaldırıl!");
+        }
     }
 
     public void YeniUrunEkleSil()

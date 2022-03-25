@@ -1,13 +1,11 @@
 ﻿namespace OOPWithService;
 
-using OOPWithService.Records;
-
 using System;
-using System.Collections;
 
 public class UrunService : IUrunService
 {
-    private ArrayList observers = new ArrayList();
+    public record AddUrun(UrunModel model);
+    public record DeleteUrun(UrunModel model);
 
     public void GetAll()
     {
@@ -19,35 +17,26 @@ public class UrunService : IUrunService
     {
         Console.WriteLine($"{urun.Ad}, Uzak servise gönderildi.");
         Console.WriteLine($"{urun.Ad}, Eklendi");
-        observers.OfType<IObserver<AddedModel<UrunModel>>>()
-            .ToList()
-            .ForEach(observer => observer.OnNext(new AddedModel<UrunModel>(urun)));
+        this.Notify(new AddUrun(urun));
     }
 
     public void Remove(UrunModel urun)
     {
         Console.WriteLine($"{urun.Ad}, Uzak servise gönderildi.");
         Console.WriteLine($"{urun.Ad}, Silindi");
-        observers.OfType<IObserver<RemovedModel<UrunModel>>>()
-            .ToList()
-            .ForEach(observer => observer.OnNext(new RemovedModel<UrunModel>(urun)));
+        this.Notify(new DeleteUrun(urun));
     }
 
+    private List<IObserver<Object>> observers = new List<IObserver<Object>>();
 
-    public void Dispose() 
-    {
-        this.observers.Clear();
-    }
-
-    public IDisposable Subscribe(IObserver<AddedModel<UrunModel>> observer)
+    public IDisposable Subscribe(IObserver<Object> observer)
     {
         this.observers.Add(observer);
-        return this;
+        return null;
     }
 
-    public IDisposable Subscribe(IObserver<RemovedModel<UrunModel>> observer)
+    public void Notify(Object obj)
     {
-        this.observers.Add(observers);
-        return this;
+        this.observers.ToList().ForEach(observer => observer.OnNext(obj));
     }
 }

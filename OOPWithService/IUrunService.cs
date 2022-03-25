@@ -1,8 +1,6 @@
 ﻿namespace OOPWithService;
 
-using OOPWithService.Records;
-
-public interface IUrunService : IObservable<AddedModel<UrunModel>>, IObservable<RemovedModel<UrunModel>>, IDisposable
+public interface IUrunService : IObservable<Object>
 {
     void Add(UrunModel urun);
     void GetAll();
