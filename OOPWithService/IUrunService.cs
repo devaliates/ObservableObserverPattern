@@ -2,7 +2,7 @@
 
 using OOPWithService.Records;
 
-public interface IUrunService : IObservable<AddedModel<UrunModel>>, IObservable<RemovedModel<UrunModel>>, IDisposable
+public interface IUrunService : IObservable<AddUrun>, IObservable<RemoveUrun>, IDisposable
 {
     void Add(UrunModel urun);
     void GetAll();

@@ -19,33 +19,36 @@ public class UrunService : IUrunService
     {
         Console.WriteLine($"{urun.Ad}, Uzak servise gönderildi.");
         Console.WriteLine($"{urun.Ad}, Eklendi");
-        observers.OfType<IObserver<AddedModel<UrunModel>>>()
-            .ToList()
-            .ForEach(observer => observer.OnNext(new AddedModel<UrunModel>(urun)));
+        
+        this.Notify(new AddUrun(urun));
     }
 
     public void Remove(UrunModel urun)
     {
         Console.WriteLine($"{urun.Ad}, Uzak servise gönderildi.");
         Console.WriteLine($"{urun.Ad}, Silindi");
-        observers.OfType<IObserver<RemovedModel<UrunModel>>>()
-            .ToList()
-            .ForEach(observer => observer.OnNext(new RemovedModel<UrunModel>(urun)));
+        this.Notify(new RemoveUrun(urun));
     }
 
+    private void Notify<T>(T obj)
+    {
+        observers.OfType<IObserver<T>>()
+            .ToList()
+            .ForEach(observer => observer.OnNext(obj));
+    }
 
     public void Dispose() 
     {
         this.observers.Clear();
     }
 
-    public IDisposable Subscribe(IObserver<AddedModel<UrunModel>> observer)
+    public IDisposable Subscribe(IObserver<AddUrun> observer)
     {
         this.observers.Add(observer);
         return this;
     }
 
-    public IDisposable Subscribe(IObserver<RemovedModel<UrunModel>> observer)
+    public IDisposable Subscribe(IObserver<RemoveUrun> observer)
     {
         this.observers.Add(observers);
         return this;
