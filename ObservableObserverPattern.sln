@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.31903.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObservableObserverPattern", "ObservableObserverPattern\ObservableObserverPattern.csproj", "{04CEF9F9-8F33-4CF4-9340-CD2416A32BFF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOPWithService", "OOPWithService\OOPWithService.csproj", "{9BDD3C87-7D76-41D7-A830-2B2096C9097C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{04CEF9F9-8F33-4CF4-9340-CD2416A32BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04CEF9F9-8F33-4CF4-9340-CD2416A32BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04CEF9F9-8F33-4CF4-9340-CD2416A32BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BDD3C87-7D76-41D7-A830-2B2096C9097C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BDD3C87-7D76-41D7-A830-2B2096C9097C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BDD3C87-7D76-41D7-A830-2B2096C9097C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BDD3C87-7D76-41D7-A830-2B2096C9097C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
